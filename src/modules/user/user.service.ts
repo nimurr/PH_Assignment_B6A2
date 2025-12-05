@@ -7,6 +7,7 @@ const getAllUsers = async () => {
 }
 
 const AdminorOwnProfile = async (customerInfo: any, userId: any, data: any) => {
+    const { name, email, phone, role } = data;
 
     const findIfExist = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId])
     if (findIfExist.rows.length < 1) {
@@ -14,14 +15,10 @@ const AdminorOwnProfile = async (customerInfo: any, userId: any, data: any) => {
     }
 
     if (customerInfo.role == "admin" || customerInfo.id == userId) {
-        const result = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId])
-        delete result.rows[0].password
-        // result update user    
+        // update user
 
-        if (data.name) result.rows[0].name = data.name
-        if (data.email) result.rows[0].email = data.email
-        if (data.phone) result.rows[0].phone = data.phone
-        if (data.role) result.rows[0].role = data.role
+        const result = await pool.query(`UPDATE users SET name = $1, email = $2, phone = $3, role = $4 WHERE id = $5 RETURNING *`, [ name, email, phone, role, userId])
+        delete result.rows[0].password
 
         return result.rows[0]
     }
