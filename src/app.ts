@@ -15,9 +15,13 @@ app.use(express.json());
 //!====== initializing DB ======
 initDB()
 
-//! ==== Home Testing Route ====
+//! ==== API Testing Route ====
 app.get("/", logger, (req: Request, res: Response) => {
-    res.send("Hello Next Level Developers!");
+    res.status(200).json({
+        code: 200,
+        status: "success",
+        message: "👋 Hello PH developer group!  My API Is Working Perfectly ☺️ "
+    });
 });
 
 
@@ -33,7 +37,7 @@ app.use("/api/v1/users", userRoutes)
 app.use('/api/v1/vehicles', vehicleRoutes)
 
 //!====== Bookings =======
-app.use('/api/v1/vehicles', bookingRoutes)
+app.use('/api/v1/bookings', bookingRoutes)
 
 
 //?======================= End Routes =======================
