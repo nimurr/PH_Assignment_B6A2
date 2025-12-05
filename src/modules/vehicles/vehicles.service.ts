@@ -62,10 +62,25 @@ const updateVehiclesById = async (
     return result.rows[0];
 };
 
+const deleteVehiclesById = async (vehicleId: number | string) => {
+
+    const findIfExist = await pool.query(`SELECT * FROM vehicles WHERE id = $1`, [vehicleId]);
+    
+    if (findIfExist.rows.length < 1) {
+        throw new Error("Vehicle not found");
+    }
+
+    const result = await pool.query(`DELETE FROM vehicles WHERE id = $1`, [vehicleId]);
+
+    return result.rows[0]
+
+}
 
 export const vehicleService = {
     createVehicle,
     getAllVehicles,
     getVehiclesById,
-    updateVehiclesById
+    updateVehiclesById,
+    deleteVehiclesById
+
 }
