@@ -6,8 +6,18 @@ const signUp = async (req: Request, res: Response) => {
     const { name, email, password, phone, role } = req.body;
     try {
         const result = await authService.signUp(name, email, password, phone, role)
-    } catch (error) {
-        
+
+        res.status(200).json({
+            success: true,
+            message: "User registered successfully",
+            data: result,
+        });
+
+    } catch (error : any) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
     }
 
 }
@@ -19,7 +29,7 @@ const loginUser = async (req: Request, res: Response) => {
         const result = await authService.loginUser(email, password);
         res.status(200).json({
             success: true,
-            message: "User logged in successfully",
+            message: "Login successful",
             data: result,
         });
     } catch (err: any) {

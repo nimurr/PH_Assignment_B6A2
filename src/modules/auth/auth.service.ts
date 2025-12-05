@@ -9,9 +9,15 @@ const signUp = async (name: string, email: string, password: string, phone: numb
     const salt = await bycrpt.genSalt(10)
     const hash = await bycrpt.hash(password, salt)
 
+    const findUserIsExist = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
+
+    if (findUserIsExist.rows.length > 0) {
+        throw new Error('User Email already exists')
+    }
+
     const result = await pool.query(`INSERT INTO users (name, email, password, phone, role) VALUES ($1, $2, $3, $4, $5) RETURNING *`, [name, email, hash, phone, role])
 
-    return result
+    return result?.rows[0]
 }
 
 
@@ -34,11 +40,9 @@ const loginUser = async (email: string, password: string) => {
 
     const token = jwt.sign({ id: user.id, email: user.email, name: user.name, role: user.role }, config.jwt_secret, { expiresIn: '7d' })
 
-    console.log(token)
-
     const results = {
         token,
-        user: result.rows
+        user: result.rows[0]
     }
 
     return results
