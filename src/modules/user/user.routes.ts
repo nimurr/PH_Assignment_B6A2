@@ -10,5 +10,4 @@ router.put('/:userId', logger, auth("admin", "customer"), userController.Adminor
 router.delete('/:userId', logger, auth("admin"), userController.deleteById)
 
 
-
 export const userRoutes = router;
