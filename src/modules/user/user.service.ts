@@ -17,7 +17,7 @@ const AdminorOwnProfile = async (customerInfo: any, userId: any, data: any) => {
     if (customerInfo.role == "admin" || customerInfo.id == userId) {
         // update user
 
-        const result = await pool.query(`UPDATE users SET name = $1, email = $2, phone = $3, role = $4 WHERE id = $5 RETURNING *`, [ name, email, phone, role, userId])
+        const result = await pool.query(`UPDATE users SET name = $1, email = $2, phone = $3, role = $4 WHERE id = $5 RETURNING *`, [name, email, phone, role, userId])
         delete result.rows[0].password
 
         return result.rows[0]
@@ -28,9 +28,14 @@ const AdminorOwnProfile = async (customerInfo: any, userId: any, data: any) => {
 
 }
 
+const deleteById = async (userId: any) => {
+
+}
+
 
 export const userService = {
     getAllUsers,
-    AdminorOwnProfile
+    AdminorOwnProfile,
+    deleteById
 
 }

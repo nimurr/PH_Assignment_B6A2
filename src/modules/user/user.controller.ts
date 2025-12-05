@@ -31,12 +31,25 @@ const AdminorOwnProfile = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(500).json({ success: false, message: error.message });
     }
+}
 
+const deleteById = async (req: Response, res: Response) => {
+    const { userId } = req.params as { userId: string | number };
 
+    try {
+        const result = await userService.deleteById(userId);
+        res.status(200).json({
+            success: true,
+            message: "User deleted successfully"
+        });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 }
 
 
 export const userController = {
     getAllUsers,
-    AdminorOwnProfile
+    AdminorOwnProfile,
+    deleteById
 }
