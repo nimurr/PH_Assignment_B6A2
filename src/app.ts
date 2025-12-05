@@ -24,7 +24,6 @@ app.get("/", logger, (req: Request, res: Response) => {
     });
 });
 
-
 //?======================== Start Routes ====================
 
 //!======= Auth crud =======
@@ -39,7 +38,6 @@ app.use('/api/v1/vehicles', vehicleRoutes)
 //!====== Bookings =======
 app.use('/api/v1/bookings', bookingRoutes)
 
-
 //?======================= End Routes =======================
 
 
@@ -51,6 +49,4 @@ app.use((req, res) => {
         path: req.path,
     });
 });
-
-
 export default app
