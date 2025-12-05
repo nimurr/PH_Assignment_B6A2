@@ -4,6 +4,7 @@ import initDB, { pool } from "./config/db";
 import logger from "./middleware/logger";
 import { userRoutes } from "./modules/user/user.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { vehicleRoutes } from "./modules/vehicles/vehicles.routes";
 
 //!Basic Express Setup
 const app = express();
@@ -26,6 +27,8 @@ app.use('/api/v1/auth', authRoutes)
 //!==== All users CRUD ====
 app.use("/api/v1/users", userRoutes)
 //! ======== vehicles CRUD =======
+
+app.use('/api/v1/vehicles', vehicleRoutes)
 
 
 //!====== Bookings =======
