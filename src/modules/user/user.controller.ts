@@ -33,6 +33,11 @@ const AdminorOwnProfile = async (req: Request, res: Response) => {
     }
 }
 
+
+//! ============= 10. Delete User ============
+// Access: Admin only
+// Description: Delete a user(only if no active bookings exist)
+
 const deleteById = async (req: Request, res: Response) => {
     const { userId } = req.params;
 
