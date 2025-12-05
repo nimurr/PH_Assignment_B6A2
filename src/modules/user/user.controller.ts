@@ -10,8 +10,8 @@ const getAllUsers = async (req: Request, res: Response) => {
             message: "Users retrieved successfully",
             data: result
         });
-    } catch (error) {
-
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 
@@ -22,14 +22,14 @@ const AdminorOwnProfile = async (req: Request, res: Response) => {
     const customerInfo = req.user;
 
     try {
-        const result = await userService.AdminorOwnProfile(customerInfo, userId , data);
+        const result = await userService.AdminorOwnProfile(customerInfo, userId, data);
         res.status(200).json({
             success: true,
             message: "Users retrieved successfully",
             data: result
         });
-    } catch (error) {
-
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
     }
 
 
