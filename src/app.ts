@@ -22,10 +22,13 @@ app.get("/", logger, (req: Request, res: Response) => {
 //?======================== Start Routes ====================
 
 //!======= todos crud =======
-app.use('/auth', authRoutes)
+app.use('/api/v1/auth', authRoutes)
 //!==== All users CRUD ====
-app.use("/users", userRoutes)
+app.use("/api/v1/users", userRoutes)
+//! ======== vehicles CRUD =======
 
+
+//!====== Bookings =======
 
 
 //?======================= End Routes =======================
