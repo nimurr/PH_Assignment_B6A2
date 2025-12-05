@@ -2,6 +2,16 @@ import { Request, Response } from "express";
 import { authService } from "./auth.service";
 
 
+const signUp = async (req: Request, res: Response) => {
+    const { name, email, password, phone, role } = req.body;
+    try {
+        const result = await authService.signUp(name, email, password, phone, role)
+    } catch (error) {
+        
+    }
+
+}
+
 const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body
 
@@ -22,5 +32,6 @@ const loginUser = async (req: Request, res: Response) => {
 
 
 export const authController = {
+    signUp,
     loginUser
 }

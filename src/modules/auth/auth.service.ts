@@ -1,8 +1,19 @@
 import { pool } from "../../config/db"
 import bycrpt from "bcryptjs"
-// var jwt = require('jsonwebtoken');
 import jwt from "jsonwebtoken"
 import config from "../../config"
+
+
+const signUp = async (name: string, email: string, password: string, phone: number, role: string) => {
+
+    const salt = await bycrpt.genSalt(10)
+    const hash = await bycrpt.hash(password, salt)
+
+    const result = await pool.query(`INSERT INTO users (name, email, password, phone, role) VALUES ($1, $2, $3, $4, $5) RETURNING *`, [name, email, hash, phone, role])
+
+    return result
+}
+
 
 const loginUser = async (email: string, password: string) => {
     const result = await pool.query(`SELECT * FROM users WHERE email = $1`, [email])
@@ -34,5 +45,6 @@ const loginUser = async (email: string, password: string) => {
 }
 
 export const authService = {
+    signUp,
     loginUser
 }
