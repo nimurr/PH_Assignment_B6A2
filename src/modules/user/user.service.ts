@@ -29,7 +29,13 @@ const AdminorOwnProfile = async (customerInfo: any, userId: any, data: any) => {
 }
 
 const deleteById = async (userId: any) => {
+    const findIfExist = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId])
+    if (findIfExist.rows.length < 1) {
+        throw new Error('User not found')
+    }
 
+    const result = await pool.query(`DELETE FROM users WHERE id = $1`, [userId])
+    return result.rows
 }
 
 

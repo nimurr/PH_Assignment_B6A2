@@ -33,8 +33,8 @@ const AdminorOwnProfile = async (req: Request, res: Response) => {
     }
 }
 
-const deleteById = async (req: Response, res: Response) => {
-    const { userId } = req.params as { userId: string | number };
+const deleteById = async (req: Request, res: Response) => {
+    const { userId } = req.params;
 
     try {
         const result = await userService.deleteById(userId);
