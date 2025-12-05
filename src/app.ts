@@ -5,6 +5,7 @@ import logger from "./middleware/logger";
 import { userRoutes } from "./modules/user/user.routes";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { vehicleRoutes } from "./modules/vehicles/vehicles.routes";
+import { bookingRoutes } from "./modules/bookings/bookings.routes";
 
 //!Basic Express Setup
 const app = express();
@@ -22,16 +23,17 @@ app.get("/", logger, (req: Request, res: Response) => {
 
 //?======================== Start Routes ====================
 
-//!======= todos crud =======
+//!======= Auth crud =======
 app.use('/api/v1/auth', authRoutes)
+
 //!==== All users CRUD ====
 app.use("/api/v1/users", userRoutes)
-//! ======== vehicles CRUD =======
 
+//! ======== vehicles CRUD =======
 app.use('/api/v1/vehicles', vehicleRoutes)
 
-
 //!====== Bookings =======
+app.use('/api/v1/vehicles', bookingRoutes)
 
 
 //?======================= End Routes =======================
