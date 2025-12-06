@@ -48,8 +48,8 @@ const initDB = async () => {
     rent_end_date TIMESTAMP NOT NULL,
     total_price INT NOT NULL,
     status VARCHAR(50) NOT NULL,
-    customer TEXT NOT NULL,
-    vehicle TEXT NOT NULL,
+    customer JSON,
+    vehicle JSON,
     
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
