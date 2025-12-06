@@ -26,7 +26,7 @@ const adminSeeAllCustomerSeeOne = async (req: Request, res: Response) => {
     const { role, id } = req.user as JwtPayload
 
     try {
-        const result = await bookingService.adminSeeAllCustomerSeeOne(role , id);
+        const result = await bookingService.adminSeeAllCustomerSeeOne(role, id);
         res.status(200).json({
             success: true,
             message: "Bookings retrieved successfully",
@@ -38,8 +38,13 @@ const adminSeeAllCustomerSeeOne = async (req: Request, res: Response) => {
     }
 }
 
+const updateBookingById = async (req: Request, res: Response) => {
+
+}
+
 
 export const bookingController = {
     createBooking,
-    adminSeeAllCustomerSeeOne
+    adminSeeAllCustomerSeeOne,
+    updateBookingById
 }

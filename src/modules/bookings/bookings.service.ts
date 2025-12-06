@@ -63,4 +63,9 @@ const adminSeeAllCustomerSeeOne = async (role: string, id: number) => {
     return []
 }
 
-export const bookingService = { createBooking, adminSeeAllCustomerSeeOne };
+const updateBookingById = async (bookingId: number, status: string) => {
+    
+}
+
+
+export const bookingService = { createBooking, adminSeeAllCustomerSeeOne, updateBookingById };
