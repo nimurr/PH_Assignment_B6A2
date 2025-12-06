@@ -19,7 +19,9 @@ const createBooking = async (customer_id: number, vehicle_id: number, rent_start
 
         const vehicleData = {
             vehicle_name: vehicle.rows[0].vehicle_name,
-            registration_number: vehicle.rows[0].registration_number
+            registration_number: vehicle.rows[0].registration_number,
+            availability_status: vehicle.rows[0].availability_status,
+            type: vehicle.rows[0].type
         }
 
         const customerData = {
@@ -40,8 +42,10 @@ const createBooking = async (customer_id: number, vehicle_id: number, rent_start
         );
 
         delete rental.rows[0].customer
+        delete rental.rows[0].vehicle.availability_status
+        delete rental.rows[0].vehicle.type
 
-        return rental.rows[0]
+        return await rental.rows[0]
 
     } catch (error: any) {
         throw new Error(error.message);
@@ -52,19 +56,63 @@ const adminSeeAllCustomerSeeOne = async (role: string, id: number) => {
     // if role is admin then can see all but if role is customer then can only see own bookings
     if (role === "admin") {
         const result = await pool.query(`SELECT * FROM bookings`)
-        return result.rows
+
+        for (let i = 0; i < result.rows.length; i++) {
+            delete result.rows[i].vehicle.availability_status
+            delete result.rows[i].vehicle.type
+        }
+        const data = await result.rows
+
+        return data
     }
     else if (role === "customer") {
         const result = await pool.query(`SELECT * FROM bookings WHERE customer_id = $1`, [id])
-        delete result.rows[0].customer
 
-        return result.rows
+        for (let i = 0; i < result.rows.length; i++) {
+            delete result.rows[i].customer
+            delete result.rows[i].vehicle.availability_status
+        }
+        const data = await result.rows
+
+        return data
     }
     return []
 }
 
-const updateBookingById = async (bookingId: number, status: string) => {
-    
+// Access: Role-based
+// Description: Update booking status based on user role and business rules
+
+
+const updateBookingById = async (bookingId: any, status: string, role: string) => {
+    const statusData = {
+        status
+    }
+    if (status === "cancelled" && role === "admin") {
+        throw new Error('Only can cancelled by customer')
+    }
+    if (status === "returned" && role === "customer") {
+        throw new Error('Only can returned by admin')
+    }
+
+    if (status === "cancelled" && role === "customer") {
+        const result = await pool.query(`UPDATE bookings SET status = $1 WHERE id = $2 RETURNING *`, [status, bookingId])
+
+        delete result.rows[0].vehicle
+        delete result.rows[0].customer
+
+        return result.rows[0]
+    }
+    else if (status === "returned" && role === "admin") {
+        const result = await pool.query(`UPDATE bookings SET status = $1 WHERE id = $2 RETURNING *`, [status, bookingId])
+        await pool.query(`UPDATE vehicles SET availability_status = 'available' WHERE id = $1 RETURNING *`, [result.rows[0].vehicle_id])
+
+        delete result.rows[0].customer
+
+        return await result.rows[0]
+    }
+
+    return []
+
 }
 
 

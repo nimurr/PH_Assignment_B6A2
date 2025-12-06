@@ -39,6 +39,20 @@ const adminSeeAllCustomerSeeOne = async (req: Request, res: Response) => {
 }
 
 const updateBookingById = async (req: Request, res: Response) => {
+    const { bookingId } = req.params;
+    const { role } = req.user as JwtPayload;
+    const { status } = req.body;
+
+    try {
+        const result = await bookingService.updateBookingById(bookingId, status, role);
+        res.status(200).json({
+            success: true,
+            message: "Booking updated successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 
 }
 
