@@ -12,6 +12,11 @@ const createBooking = async (customer_id: number, vehicle_id: number, rent_start
             [vehicle_id]
         );
 
+        await pool.query(
+            `UPDATE vehicles SET availability_status = 'unavailable' WHERE id = $1`,
+            [vehicle_id]
+        )
+
         const customer = await pool.query(
             `SELECT name, email FROM users WHERE id = $1`,
             [customer_id]
