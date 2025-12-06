@@ -29,14 +29,9 @@ npm install
 
 ### 3️⃣ Create `.env` file
 ```
-PORT=5000
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=yourpassword
-DB_NAME=vehicle_rental
-
-JWT_SECRET=your_secret_key
+CONNECTION_STR=
+PORT=
+JWT_SECRET=
 ```
 
 ### 4️⃣ Run the project
