@@ -16,6 +16,15 @@ const createBooking = async (
             [vehicle_id]
         );
 
+        if (vehicleRes.rows[0].availability_status === "unavailable") {
+            throw new Error("Vehicle Is Already Booked");
+        }
+
+        await pool.query(
+            `UPDATE vehicles SET availability_status = 'unavailable' WHERE id = $1`,
+            [vehicle_id]
+        )
+
         if (vehicleRes.rowCount === 0) {
             throw new Error("Vehicle not found");
         }
@@ -165,6 +174,8 @@ const updateBookingById = async (bookingId: any, status: string, role: string) =
 
     if (status === "cancelled" && role === "customer") {
         const result = await pool.query(`UPDATE bookings SET status = $1 WHERE id = $2 RETURNING *`, [status, bookingId])
+
+        await pool.query(`UPDATE vehicles SET availability_status = 'available' WHERE id = $1 RETURNING *`, [result.rows[0].vehicle_id])
 
         delete result.rows[0].vehicle
         delete result.rows[0].customer
