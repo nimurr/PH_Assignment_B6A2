@@ -4,6 +4,7 @@ import { bookingController } from "./bookings.controller";
 const router = Router();
 
 router.post('/', auth("admin", "customer"), bookingController.createBooking);
-
+router.get('/', auth("admin", "customer"), bookingController.adminSeeAllCustomerSeeOne);
+router.put('/:bookingId', auth("admin", "customer"), bookingController.updateBookingById);
 
 export const bookingRoutes = router;
