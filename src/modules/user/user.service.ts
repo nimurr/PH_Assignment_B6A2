@@ -3,6 +3,11 @@ import bcrypt from "bcryptjs";
 
 const getAllUsers = async () => {
     const result = await pool.query(`SELECT * FROM users`)
+
+    for (let i = 0; i < result.rows.length; i++) {
+        delete result.rows[i].password
+    }
+
     return result.rows
 }
 
