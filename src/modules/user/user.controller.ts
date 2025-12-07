@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { userService } from "./user.service";
+import { JwtPayload } from "jsonwebtoken";
 
 const getAllUsers = async (req: Request, res: Response) => {
 
@@ -40,9 +41,11 @@ const AdminorOwnProfile = async (req: Request, res: Response) => {
 
 const deleteById = async (req: Request, res: Response) => {
     const { userId } = req.params;
+    const { role } = req.user as JwtPayload
 
     try {
-        const result = await userService.deleteById(userId);
+        const result = await userService.deleteById(userId, role);
+
         res.status(200).json({
             success: true,
             message: "User deleted successfully"

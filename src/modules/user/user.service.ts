@@ -33,14 +33,26 @@ const AdminorOwnProfile = async (customerInfo: any, userId: any, data: any) => {
 
 }
 
-const deleteById = async (userId: any) => {
+const deleteById = async (userId: any, role: any) => {
+
+
     const findIfExist = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId])
+
     if (findIfExist.rows.length < 1) {
         throw new Error('User not found')
     }
+    if (role !== "admin") {
+        throw new Error('Only Admin Can Delete user')
+    }
+
+    const findNoActiveBookings = await pool.query(`SELECT * FROM bookings WHERE customer_id = $1`, [userId])
+    if (findNoActiveBookings.rows.length > 0) {
+        throw new Error('User has active bookings')
+    }
 
     const result = await pool.query(`DELETE FROM users WHERE id = $1`, [userId])
-    return result.rows
+    return result.rows[0]
+
 }
 
 
